@@ -25,7 +25,8 @@ update:
 
 test: REBAR := $(REBAR),test
 test: testclean compile
-	ERL_LIBS=$(ROOT_DIR)/_build/public+test/lib/:${ERL_LIBS} ct_run -spec logplex.spec
+	epmd &
+	$(REBAR) ct --setcookie "asfasfas" --name foo@127.0.0.1
 
 clean:
 	$(REBAR) clean
