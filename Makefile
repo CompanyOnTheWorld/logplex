@@ -23,10 +23,11 @@ update:
 # typer: $(LOGPLEX_PLT)
 # 	typer --plt $(HERMES_PLT) -I deps/ -r src
 
-test: REBAR := $(REBAR),test
+test:
 test: testclean compile
 	epmd &
-	$(REBAR) ct --setcookie "asfasfas" --name foo@127.0.0.1
+	$(REBAR),test ct --setcookie "asfasfas" --name foo@127.0.0.1
+	$(REBAR),test,syslog ct --setcookie "asfasfas" --name foo@127.0.0.1
 
 clean:
 	$(REBAR) clean
