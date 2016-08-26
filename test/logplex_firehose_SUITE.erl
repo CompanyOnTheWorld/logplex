@@ -17,28 +17,8 @@ all() ->
 %%%%%%%%%%%%%%%%%%%%%%
 %% Runs once at the beginning of the suite. The process is different
 %% from the one the case will run in.
-
 init_per_suite(Config) ->
     Config.
-
--ifdef(LOG_TO_SYSLOG).
-setup() ->
-    Host = {127,0,0,1},
-    Port = 601,
-    ct:pal("Setting up syslog logging on ~p:~p~n", [Host, Port]),
-    {ok, HostName} = inet:gethostname(),
-    syslog_lib:init_table(
-      syslog_tab,
-      logplex,
-      Host,
-      Port,
-      local3,
-      HostName).
-
--else.
-setup() ->
-    ct:pal("Using batchio logging~n").
--endif.
 
 %% Runs once at the end of the suite. The process is different
 %% from the one the case will run in.
@@ -48,7 +28,7 @@ end_per_suite(Config) ->
 %% Runs before the test case. Runs in the same process.
 init_per_testcase(_, Config) ->
     application:start(folsom_metrics, transient),
-    setup(),
+    logplex_logging:setup(),
     Config.
 
 %% Runs after the test case. Runs in the same process.
